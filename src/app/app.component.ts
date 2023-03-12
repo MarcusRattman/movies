@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { MoviesService } from './movies.service';
 import { IMovie } from './models';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
+import { MoviesService } from './movies.service';
 
 @Component({
   selector: 'app-root',
@@ -9,23 +8,20 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dial
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public movies: IMovie[];
-  public best?: IMovie;
   public genres: {[id: number]: string};
   public genre: string;
   public title: string;
 
-  onInputChange(e: any) {
+  onInputChange(e: any): void {
     this.title = e.target.value;
     this.filterMovies();
   }
 
-  filterMovies() {
-    this.movies = this.moviesService.filterMovies(this.title, this.genre)
+  filterMovies(): IMovie[] {
+    return this.moviesService.getMovies(this.title, this.genre);
   }
 
-  constructor(private moviesService: MoviesService) {
-    this.movies = this.moviesService.getMovies();
+  constructor(public moviesService: MoviesService) {
     this.genres = this.moviesService.getAllGenres();
     this.genre = 'Все';
     this.title = '';

@@ -5,3 +5,7 @@ export interface IMovie {
     description: string,
     genre: number[],
 }
+
+export interface IGenre {
+    [id: number]: string
+}

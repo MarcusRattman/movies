@@ -10,8 +10,7 @@ import { MoviesService } from '../movies.service';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit{
-  @Input()
-  movie!: IMovie;
+  @Input() movie!: IMovie | null;
   genres!: string;
   icon = 'favorite_border';
   fav = false;
@@ -44,6 +43,8 @@ export class CardComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.genres = this.moviesService.getMovieGenres(this.movie.genre);
+    if (this.movie) {
+      this.genres = this.moviesService.getMovieGenres(this.movie.genre);
+    }
   }
 }

@@ -16,13 +16,22 @@
     }
 
     img {
-        height: 400px;
+        height: 350px;
         border-radius: 0.5rem;
     }
 
     .info {
         color: #1d1838;
         line-break: loose;
+    }
+
+    .controls {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
     }
 
     .mat-blue {

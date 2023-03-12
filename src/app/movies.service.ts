@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IMovie } from './models';
+import { IMovie, IGenre } from './models';
+import { Observable, of } from 'rxjs';
 import data from '../assets/data.json'
 
 @Injectable({
@@ -7,7 +8,8 @@ import data from '../assets/data.json'
 })
 export class MoviesService {
   private movies: IMovie[];
-  private genres: {[id: number]: string};
+  private genres: IGenre;
+  private best?: Observable<IMovie>;
   
   constructor() {
     this.movies = data;
@@ -24,11 +26,23 @@ export class MoviesService {
       10: "детектив",
       11: "фантастика",
     }
+    this.best = undefined;
   }
 
-  getMovies() { return this.movies }
+  getBest(): Observable<IMovie> | undefined {
+    return this.best;
+  }
 
-  filterMovies(title: string, genre: string) {
+  bestify(movie: IMovie | null): void {
+    if (movie) {
+      this.best = of(movie);
+    }
+    else {
+      this.best = undefined;
+    }
+  }
+
+  getMovies(title: string, genre: string): IMovie[] {
     const result = this.movies.filter((movie) => movie.name.toLowerCase().includes(title.toLowerCase()));
     
     if (genre == 'Все') {
@@ -42,7 +56,7 @@ export class MoviesService {
     return genres.map((genre) => this.genres[genre]).join(', ');
   }
 
-  getAllGenres() {
+  getAllGenres(): IGenre {
     return this.genres;
   }
 }

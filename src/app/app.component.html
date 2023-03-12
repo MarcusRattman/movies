@@ -1,27 +1,32 @@
-<div>
-  <h1>Популярные фильмы</h1>
-  <div class="form">
-    <mat-form-field appearance="outline">
-      <mat-select [(value)]="genre" (selectionChange)="filterMovies()">
-        <mat-option value="Все">Все</mat-option>
-        <mat-option [value]="genre.value" *ngFor="let genre of genres | keyvalue">{{ genre.value }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+<div class="container">
 
-    <mat-form-field appearance="outline">
-      <input matInput type="text" placeholder="Введите название" (keyup)="onInputChange($event)">
-    </mat-form-field>
-  </div>
+  <section>
+    <h1>Популярные фильмы</h1>
+    <div class="form">
+      <mat-form-field appearance="outline">
+        <mat-select [(value)]="genre" (selectionChange)="filterMovies()">
+          <mat-option value="Все">Все</mat-option>
+          <mat-option [value]="genre.value" *ngFor="let genre of genres | keyvalue">{{ genre.value }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <div class="movies">
-    <div *ngFor="let movie of movies">
-      <app-card [movie]="movie"></app-card>
+      <mat-form-field appearance="outline">
+        <input matInput type="text" placeholder="Введите название" (keyup)="onInputChange($event)">
+      </mat-form-field>
     </div>
-  </div>
+
+    <div class="movies">
+      <div *ngFor="let movie of filterMovies()">
+        <app-card [movie]="movie"></app-card>
+      </div>
+    </div>
+  </section>
 
   <div class="best">
     <h1>Самый лучший фильм</h1>
+    <app-card [movie]="this.moviesService.getBest() | async" *ngIf="this.moviesService.getBest()"></app-card>
   </div>
+
 </div>
 
 <router-outlet></router-outlet>
