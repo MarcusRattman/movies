@@ -24,7 +24,7 @@
 
   <div class="best">
     <h1>Самый лучший фильм</h1>
-    <app-card [movie]="this.moviesService.getBest() | async" *ngIf="this.moviesService.getBest()"></app-card>
+    <app-card *ngIf="this.moviesService.getBest() | async" [movie]="this.moviesService.getBest() | async"></app-card>
   </div>
 
 </div>

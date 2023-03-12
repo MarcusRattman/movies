@@ -22,22 +22,11 @@ export class CardDialogComponent {
     ) { }
 
   isBest(): boolean {
-    let currBest = 0;
-    this.moviesService.getBest()?.subscribe(data => currBest = data.id).unsubscribe();
-
-    if (this.data.movie.id == currBest) {
-      return true;
-    }
-    return false;
+    return this.moviesService.isBest(this.data.movie);
   }
 
   bestify() {
-    if (this.isBest()) {
-      this.moviesService.bestify(null);
-    }
-    else {
-      this.moviesService.bestify(this.data.movie);
-    }
+    this.moviesService.bestify(this.data.movie);
   }
 
   onNoClick(): void {

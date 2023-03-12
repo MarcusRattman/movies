@@ -9,7 +9,7 @@ import data from '../assets/data.json'
 export class MoviesService {
   private movies: IMovie[];
   private genres: IGenre;
-  private best?: Observable<IMovie>;
+  private best: Observable<IMovie>;
   
   constructor() {
     this.movies = data;
@@ -26,20 +26,42 @@ export class MoviesService {
       10: "детектив",
       11: "фантастика",
     }
-    this.best = undefined;
+    const retrieved = localStorage.getItem('best');
+    if (retrieved) {
+      this.best = of(JSON.parse(retrieved));
+    }
+    else {
+      this.best = new Observable<IMovie>;
+    }
   }
 
-  getBest(): Observable<IMovie> | undefined {
+  getBest(): Observable<IMovie> {
     return this.best;
   }
 
-  bestify(movie: IMovie | null): void {
-    if (movie) {
+  isBest(movie: IMovie): boolean {
+    let id = 0;
+    this.getBest()?.subscribe(data => id = data.id).unsubscribe();
+
+    if (movie.id === id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bestify(movie: IMovie): void {
+    let id = 0;
+    this.getBest()?.subscribe(data => id = data.id).unsubscribe();
+
+    if (movie.id !== id) {
       this.best = of(movie);
+    } else {
+      this.best = new Observable<IMovie>;
+      localStorage.removeItem('best');
     }
-    else {
-      this.best = undefined;
-    }
+
+    this.best.subscribe((movie) => localStorage.setItem('best', JSON.stringify(movie))).unsubscribe();
   }
 
   getMovies(title: string, genre: string): IMovie[] {

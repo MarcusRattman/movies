@@ -9,7 +9,7 @@
     </div>
 
     <div class="controls">
-        <button mat-flat-button color="{{ isBest()? 'red' : 'blue' }}" (click)="bestify()">{{ isBest() ? 'Удалить из лучших фильмов' : 'Выбрать лучшим фильмом' }}</button>
-        <button mat-flat-button color="red" (click)="this.dialogRef.close()">Закрыть</button>
+        <button mat-flat-button color="{{ isBest() ? 'accent' : 'primary' }}" (click)="bestify()">{{ isBest() ? 'Удалить из лучших фильмов' : 'Выбрать лучшим фильмом' }}</button>
+        <button mat-flat-button color="warn" (click)="this.dialogRef.close()">Закрыть</button>
     </div>
 </div>

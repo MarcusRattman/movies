@@ -12,11 +12,17 @@ import { MoviesService } from '../movies.service';
 export class CardComponent implements OnInit{
   @Input() movie!: IMovie | null;
   genres!: string;
-  icon = 'favorite_border';
-  fav = false;
+  icon: 'favorite_border' | 'favorite' | string = '';
   hidden = true;
 
   constructor (private moviesService: MoviesService, public dialog: MatDialog) { }
+
+  updateState() {
+    if (this.movie) {
+      this.icon = this.moviesService.isBest(this.movie) ? 'favorite' : 'favorite_border';
+      this.genres = this.moviesService.getMovieGenres(this.movie.genre);
+    }
+  }
 
   openDialog() {
     const dialogRef = this.dialog.open(CardDialogComponent, {
@@ -28,23 +34,18 @@ export class CardComponent implements OnInit{
   }
 
   like() {
-    this.fav = !this.fav;
-
-    if (this.fav) {
-      this.icon = 'favorite';
-    }
-    else {
-      this.icon = 'favorite_border';
+    if (this.movie) {
+      this.moviesService.bestify(this.movie);
+      this.updateState();
     }
   }
 
   hover() {
     this.hidden = !this.hidden;
+    this.updateState();
   }
 
   ngOnInit(): void {
-    if (this.movie) {
-      this.genres = this.moviesService.getMovieGenres(this.movie.genre);
-    }
+    this.updateState();
   }
 }
